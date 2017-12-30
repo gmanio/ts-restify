@@ -1,0 +1,23 @@
+{
+  "name": "ts-restify",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "ts-node src/server.ts",
+    "watch": "nodemon"
+  },
+  "author": "GmanPark",
+  "license": "MIT",
+  "dependencies": {
+    "mysql": "^2.15.0",
+    "restify": "^6.3.4",
+    "knex": "^0.14.2"
+  },
+  "devDependencies": {
+    "@types/knex": "0.0.67",
+    "@types/restify": "^5.0.6",
+    "nodemon": "^1.14.3",
+    "ts-node": "^4.1.0",
+    "typescript": "^2.6.2"
+  }
+}
