@@ -54,3 +54,10 @@ package-lock.json
 /src/**/*.js.map
 /src/**/**/*.js
 /src/**/**/*.js.map
+
+/client/*.js
+/client/*.js.map
+/client/**/*.js
+/client/**/*.js.map
+/client/**/**/*.js
+/client/**/**/*.js.map

@@ -12,12 +12,9 @@ class Employees {
   public async getEmployee(req: restify.Request, res: restify.Response, next: restify.Next) {
     //   const id = req.params.id;
     //   const queryParams = querystring.parse(req.getQuery());
-    await this.db
-      .select().from('employees').limit(50)
-      .then(result => {
-        res.send(result);
-        next();
-      });
+    const result = await this.db.select().from('employees').limit(50);
+    res.send(result);
+    next();
   }
 
   public async getEmployeeById(req: restify.Request, res: restify.Response, next: restify.Next) {
