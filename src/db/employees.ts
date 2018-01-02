@@ -25,6 +25,17 @@ class Employees {
         next();
       });
   }
+
+  public async getEmployeeByPage(req: restify.Request, res: restify.Response, next: restify.Next) {
+    const pageNumber = req.params.pageNumber;
+    const startIndex = pageNumber * 10;
+
+    await this.db
+      .select().from('employees').offset(startIndex).limit(50).then(result => {
+        res.send(result);
+        next();
+      })
+  }
 }
 
 export default Employees;

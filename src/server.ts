@@ -10,6 +10,7 @@ server.pre((req, res, next) => {
 });
 
 server.get('/employees', employees.getEmployee.bind(employees));
+server.get('/employees/page/:pageNumber', employees.getEmployeeByPage.bind(employees));
 server.get('/employees/:id', employees.getEmployeeById.bind(employees));
 
 server.listen(2000, () => {
