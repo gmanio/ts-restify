@@ -23,6 +23,7 @@
     "nodemon": "^1.14.3",
     "parcel-bundler": "^1.4.1",
     "postcss-modules": "^1.1.0",
+    "restify-clients": "^1.5.2",
     "ts-node": "^4.1.0",
     "typescript": "^2.6.2"
   }

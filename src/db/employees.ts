@@ -19,22 +19,37 @@ class Employees {
 
   public async getEmployeeById(req: restify.Request, res: restify.Response, next: restify.Next) {
     const id = req.params.id;
-    await this.db
-      .select().from('employees').where('emp_no', id).then(result => {
-        res.send(result);
-        next();
-      });
+    const result = await this.db.select().from('employees').where('emp_no', id);
+
+    res.send(result);
+    next();
   }
 
   public async getEmployeeByPage(req: restify.Request, res: restify.Response, next: restify.Next) {
     const pageNumber = req.params.pageNumber;
     const startIndex = pageNumber * 10;
+    const result = await this.db.select().from('employees').offset(startIndex).limit(50);
 
-    await this.db
-      .select().from('employees').offset(startIndex).limit(50).then(result => {
-        res.send(result);
-        next();
-      })
+    res.send(result);
+    next();
+  }
+
+  public async setEmployeeById(req: restify.Request, res: restify.Response, next: restify.Next) {
+    const id = req.params.id;
+    const data = JSON.parse(req.body);
+    const result = await this.db.select().from('employees').where('emp_no', id)
+      .update({
+        first_name: data.first_name,
+        last_name: data.last_name
+      });
+
+    if ( result ) {
+      res.send({ status: 'success' });
+      next();
+    } else {
+      res.send({ error: 'dbError' });
+      next();
+    }
   }
 }
 
