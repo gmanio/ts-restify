@@ -1,7 +1,4 @@
-//
-// restify.createClient({
-//   url: 'http://localhost:2000'
-// });
+import 'bootstrap/dist/css/bootstrap.css';
 
 const host = 'http://localhost:2000';
 
