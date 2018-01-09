@@ -51,6 +51,26 @@ class Employees {
       next();
     }
   }
+
+  public async getEmployeeByName(req: restify.Request, res: restify.Response, next: restify.Next) {
+    const name = req.params.name;
+    // const queryParams: any = querystring.parse(req.getQuery());
+    // if ( queryParams ) {
+    //   const pageNumber: number = queryParams.pageNumber;
+    //   const startIndex = pageNumber * 10;
+    //   result = await this.db.select().from('employees').where('first_name', 'like', `${name}%`).offset(startIndex).limit(10);
+    // } else {
+    //   const pageNumber = req.params.pageNumber;
+    //   const startIndex = pageNumber * 10;
+    //   result = await this.db.select().from('employees').where('first_name', 'like', `${name}%`).limit(20);
+    // }
+    // MATCH(content) AGAINST ('commercial' IN BOOLEAN MODE)
+
+    const result = await this.db.select().from('employees').whereRaw(`MATCH(first_name) AGAINST ('${name}*' IN BOOLEAN MODE)`).limit(20);
+
+    res.send(result);
+    next();
+  }
 }
 
 export default Employees;

@@ -1,6 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.css';
+import { Observable } from 'rxjs';
+// import 'whatwg-fetch';
+import 'fetch-polyfill';
 
-const host = 'http://localhost:2000';
+const host = 'http://localhost:2500';
 
 const App = () => {
   fetch(`${host}/employees`)
@@ -37,6 +40,41 @@ const App = () => {
   })
 };
 
+const tpl_list = (data: any) => `<tr>
+      <th scope="row">${data.emp_no}</th>
+      <td>${data.first_name}</td>
+      <td>${data.last_name}</td>
+      <td>${data.gender}</td>
+    </tr>`;
+
+const searchEvent = () => {
+  const tplBody = document.getElementById('tbody');
+  const inp_search = document.getElementById('inp_search_name');
+  if ( inp_search ) {
+    Observable.fromEvent(inp_search, 'input')
+    // .debounceTime(800)
+      .subscribe((e) => {
+        const searchText = inp_search.value;
+
+        fetch(`${host}/employees/search/${searchText}`)
+          .then(result => result.json())
+          .then(result => {
+            const render = [];
+            result.map((value, index, arr) => {
+              render.push(tpl_list(value));
+            });
+
+            tplBody.innerHTML = render.join('');
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+  }
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
   App();
+  searchEvent();
 });

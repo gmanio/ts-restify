@@ -16,8 +16,9 @@ server.pre((req, res, next) => {
 server.get('/employees', employees.getEmployee.bind(employees));
 server.get('/employees/page/:pageNumber', employees.getEmployeeByPage.bind(employees));
 server.get('/employees/:id', employees.getEmployeeById.bind(employees));
+server.get('/employees/search/:name', employees.getEmployeeByName.bind(employees));
 server.post('/employees/update/:id', employees.setEmployeeById.bind(employees));
 
-server.listen(2000, () => {
+server.listen(2500, () => {
   console.log('%s listening at %s', server.name, server.url);
 });
