@@ -1,5 +1,6 @@
 import * as restify from 'restify';
 import { employees } from './db';
+import { initiailize } from './firebase/upload';
 
 const server = restify.createServer();
 
@@ -18,6 +19,7 @@ server.get('/employees/page/:pageNumber', employees.getEmployeeByPage.bind(emplo
 server.get('/employees/:id', employees.getEmployeeById.bind(employees));
 server.get('/employees/search/:name', employees.getEmployeeByName.bind(employees));
 server.post('/employees/update/:id', employees.setEmployeeById.bind(employees));
+
 
 server.listen(2500, () => {
   console.log('%s listening at %s', server.name, server.url);

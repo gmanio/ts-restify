@@ -2,8 +2,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Observable } from 'rxjs';
 // import 'whatwg-fetch';
 import 'fetch-polyfill';
+import { initiailize, upload } from './firebase/upload';
 
 const host = 'http://localhost:2500';
+
+initiailize();
 
 const App = () => {
   fetch(`${host}/employees`)
@@ -48,19 +51,19 @@ const tpl_list = (data: any) => `<tr>
     </tr>`;
 
 const searchEvent = () => {
-  const tplBody = document.getElementById('tbody');
-  const inp_search = document.getElementById('inp_search_name');
+  const tplBody = document.getElementById('tbody') || document.body;
+  const inp_search: HTMLInputElement = <HTMLInputElement>document.getElementById('inp_search_name');
   if ( inp_search ) {
     Observable.fromEvent(inp_search, 'input')
-    // .debounceTime(800)
+      .debounceTime(100)
       .subscribe((e) => {
         const searchText = inp_search.value;
 
         fetch(`${host}/employees/search/${searchText}`)
           .then(result => result.json())
           .then(result => {
-            const render = [];
-            result.map((value, index, arr) => {
+            const render: String[] = [];
+            result.map((value: any, index: any, arr: any) => {
               render.push(tpl_list(value));
             });
 
@@ -73,8 +76,16 @@ const searchEvent = () => {
   }
 }
 
+const attachUploadEvent = () => {
+  const inputElement: HTMLInputElement = <HTMLInputElement>document.getElementById("input_file");
+  inputElement.addEventListener("change", (e) => {
+    upload(inputElement.files[0]);
+  }, false);
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
   App();
   searchEvent();
+  attachUploadEvent();
 });

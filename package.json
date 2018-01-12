@@ -21,6 +21,7 @@
     "@types/restify": "^5.0.6",
     "autoprefixer": "^7.2.4",
     "bootstrap": "^4.0.0-beta.3",
+    "firebase": "^4.8.2",
     "node-sass": "^4.7.2",
     "nodemon": "^1.14.3",
     "parcel-bundler": "^1.4.1",
