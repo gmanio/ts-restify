@@ -25,11 +25,18 @@ server.pre((req, res, next) => {
   next();
 });
 
+/**
+ * Employee Table
+ */
 server.get('/employees', employees.getEmployee.bind(employees));
 server.get('/employees/page/:pageNumber', employees.getEmployeeByPage.bind(employees));
 server.get('/employees/:id', employees.getEmployeeById.bind(employees));
 server.get('/employees/search/:name', employees.getEmployeeByName.bind(employees));
 server.post('/employees/update/:id', employees.setEmployeeById.bind(employees));
+
+/**
+ * Article Table
+ */
 server.get('/article/:id', employees.getArticle.bind(employees));
 server.post('/article/save', employees.setArticle.bind(employees));
 
