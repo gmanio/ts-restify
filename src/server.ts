@@ -9,7 +9,7 @@ const cors = corsMiddleware({
   // exposeHeaders: ['API-Token-Expiry']
 })
 
-import { employees } from './db';
+import { articleController, employeesController } from './db';
 
 const server = restify.createServer();
 
@@ -28,17 +28,17 @@ server.pre((req, res, next) => {
 /**
  * Employee Table
  */
-server.get('/employees', employees.getEmployee.bind(employees));
-server.get('/employees/page/:pageNumber', employees.getEmployeeByPage.bind(employees));
-server.get('/employees/:id', employees.getEmployeeById.bind(employees));
-server.get('/employees/search/:name', employees.getEmployeeByName.bind(employees));
-server.post('/employees/update/:id', employees.setEmployeeById.bind(employees));
+server.get('/employeesController', employeesController.getEmployee.bind(employeesController));
+server.get('/employeesController/page/:pageNumber', employeesController.getEmployeeByPage.bind(employeesController));
+server.get('/employeesController/:id', employeesController.getEmployeeById.bind(employeesController));
+server.get('/employeesController/search/:name', employeesController.getEmployeeByName.bind(employeesController));
+server.post('/employeesController/update/:id', employeesController.setEmployeeById.bind(employeesController));
 
 /**
  * Article Table
  */
-server.get('/article/:id', employees.getArticle.bind(employees));
-server.post('/article/save', employees.setArticle.bind(employees));
+server.get('/article/:id', articleController.getArticle.bind(employeesController));
+server.post('/article/save', articleController.setArticle.bind(employeesController));
 
 
 server.listen(2500, () => {

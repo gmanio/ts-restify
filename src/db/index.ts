@@ -1,5 +1,6 @@
 import * as Knex from 'knex';
 import Employees from './employees';
+import Article from './article';
 
 interface DBConfig {
   host: string
@@ -20,6 +21,7 @@ const db: Knex = Knex({
   }
 });
 
-const employees = new Employees(db);
+const employeesController = new Employees(db);
+const articleController = new Article(db);
 
-export { employees };
+export { employeesController, articleController };
