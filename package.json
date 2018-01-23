@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "ts-node src/server.ts",
+    "debug": "node --inspect ./src/main.js",
+    "start": "ts-node --inspect='0.0.0.0:8888' src/server.ts",
     "client": "parcel ./client/index.html",
     "build:client": "parcel build ./client/index.html",
     "watch": "nodemon"

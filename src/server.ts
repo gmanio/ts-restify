@@ -28,11 +28,11 @@ server.pre((req, res, next) => {
 /**
  * Employee Table
  */
-server.get('/employeesController', employeesController.getEmployee.bind(employeesController));
-server.get('/employeesController/page/:pageNumber', employeesController.getEmployeeByPage.bind(employeesController));
-server.get('/employeesController/:id', employeesController.getEmployeeById.bind(employeesController));
-server.get('/employeesController/search/:name', employeesController.getEmployeeByName.bind(employeesController));
-server.post('/employeesController/update/:id', employeesController.setEmployeeById.bind(employeesController));
+server.get('/employees', employeesController.getEmployee.bind(employeesController));
+server.get('/employees/page/:pageNumber', employeesController.getEmployeeByPage.bind(employeesController));
+server.get('/employees/:id', employeesController.getEmployeeById.bind(employeesController));
+server.get('/employees/search/:name', employeesController.getEmployeeByName.bind(employeesController));
+server.post('/employees/update/:id', employeesController.setEmployeeById.bind(employeesController));
 
 /**
  * Article Table
@@ -41,6 +41,6 @@ server.get('/article/:id', articleController.getArticle.bind(employeesController
 server.post('/article/save', articleController.setArticle.bind(employeesController));
 
 
-server.listen(2500, () => {
+server.listen(2200, () => {
   console.log('%s listening at %s', server.name, server.url);
 });

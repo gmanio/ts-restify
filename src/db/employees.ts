@@ -12,14 +12,14 @@ class Employees {
   public async getEmployee(req: restify.Request, res: restify.Response, next: restify.Next) {
     //   const id = req.params.id;
     //   const queryParams = querystring.parse(req.getQuery());
-    const result = await this.db.select().from('employeesController').limit(50);
+    const result = await this.db.select().from('employees').limit(50);
     res.send(result);
     next();
   }
 
   public async getEmployeeById(req: restify.Request, res: restify.Response, next: restify.Next) {
     const id = req.params.id;
-    const result = await this.db.select().from('employeesController').where('emp_no', id);
+    const result = await this.db.select().from('employees').where('emp_no', id);
 
     res.send(result);
     next();
@@ -28,7 +28,7 @@ class Employees {
   public async getEmployeeByPage(req: restify.Request, res: restify.Response, next: restify.Next) {
     const pageNumber = req.params.pageNumber;
     const startIndex = pageNumber * 10;
-    const result = await this.db.select().from('employeesController').offset(startIndex).limit(50);
+    const result = await this.db.select().from('employees').offset(startIndex).limit(50);
 
     res.send(result);
     next();
@@ -37,7 +37,7 @@ class Employees {
   public async setEmployeeById(req: restify.Request, res: restify.Response, next: restify.Next) {
     const id = req.params.id;
     const data = JSON.parse(req.body);
-    const result = await this.db.select().from('employeesController').where('emp_no', id)
+    const result = await this.db.select().from('employees').where('emp_no', id)
       .update({
         first_name: data.first_name,
         last_name: data.last_name
@@ -66,7 +66,7 @@ class Employees {
     // }
     // MATCH(content) AGAINST ('commercial' IN BOOLEAN MODE)
 
-    const result = await this.db.select().from('employeesController').whereRaw(`MATCH(first_name) AGAINST ('${name}*' IN BOOLEAN MODE)`).limit(20);
+    const result = await this.db.select().from('employees').whereRaw(`MATCH(first_name) AGAINST ('${name}*' IN BOOLEAN MODE)`).limit(20);
 
     res.send(result);
     next();
