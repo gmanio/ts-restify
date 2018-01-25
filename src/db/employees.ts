@@ -67,7 +67,13 @@ class Employees {
     // }
     // MATCH(content) AGAINST ('commercial' IN BOOLEAN MODE)
 
-    const result: Employee[] = await this.db.select().from('employees').whereRaw(`MATCH(first_name) AGAINST ('${name}*' IN BOOLEAN MODE)`).limit(20);
+    const result: Employee[] = await this.db
+      .select()
+      .from('employees')
+      .whereRaw(`MATCH(first_name) AGAINST ('${name}*' IN BOOLEAN MODE)`)
+      .innerJoin('salaries', 'salaries.emp_no', '=', 'employees.emp_no')
+      // .leftJoin('salaries', 'employees.emp_no', 'salaries.emp_no')
+      .limit(20);
 
     res.send(result);
     next();
