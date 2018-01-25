@@ -1,7 +1,4 @@
-enum Gender {
-  M = 'MALE',
-  F = 'FEMALE'
-}
+enum Gender {M, F}
 
 export interface Employee {
   emp_no: number;
