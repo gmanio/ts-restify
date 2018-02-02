@@ -12,7 +12,7 @@ interface DBConfig {
 const config: DBConfig = require('../../dbconfig.json');
 
 const db: Knex = Knex({
-  debug: true,
+  // debug: true,
   client: 'mysql',
   connection: {
     host: config.host,

@@ -4,7 +4,12 @@ import * as corsMiddleware from 'restify-cors-middleware';
 
 const cors = corsMiddleware({
   preflightMaxAge: 5, //Optional
-  origins: ['*']
+  origins: [
+    '*',
+    // 'http://myapp.com',
+    // 'http://*.myapp.com',
+    // /^https?:\/\/myapp.com(:[\d]+)?$/,
+  ]
   // allowHeaders: ['API-Token'],
   // exposeHeaders: ['API-Token-Expiry']
 })
@@ -14,16 +19,15 @@ import { articleController, employeesController } from './db';
 const server = restify.createServer();
 
 server.pre(cors.preflight);
+server.pre((req, res, next) => {
+  req.headers.accept = 'application/json';
+  next();
+});
 server.use(cors.actual);
 server.use(restify.plugins.gzipResponse());
 server.use(restify.plugins.queryParser({ mapParams: false }));
 server.use(restify.plugins.bodyParser({ mapParams: false }));
 
-server.pre((req, res, next) => {
-  req.headers.accept = 'application/json';
-  res.contentType = 'json';
-  next();
-});
 
 /**
  * Employee Table
