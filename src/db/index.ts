@@ -1,28 +1,41 @@
 import * as Knex from 'knex';
-import Employees from './employees';
-import Article from './article';
 
-interface DBConfig {
-  host: string
-  user: string
-  password: string
-  database: string
-}
+const config = require('../../dbconfig.json');
 
-const config: DBConfig = require('../../dbconfig.json');
+// interface DBConfig {
+//   host: string
+//   user: string
+//   password: string
+//   database: string
+// }
 
-const db: Knex = Knex({
+const masterDB = Knex({
   // debug: true,
   client: 'mysql',
   connection: {
-    host: config.host,
-    user: config.user,
-    password: config.password,
-    database: config.database
-  }
+    host: config.master.host,
+    user: config.master.user,
+    password: config.master.password,
+    database: config.master.database
+  },
+  acquireConnectionTimeout: 100
+})
+
+const slaveDB: Knex = Knex({
+  // debug: true,
+  client: 'mysql',
+  connection: {
+    host: config.slave.host,
+    user: config.slave.user,
+    password: config.slave.password,
+    database: config.slave.database
+  },
+  acquireConnectionTimeout: 100
 });
 
-const employeesController = new Employees(db);
-const articleController = new Article(db);
+export { masterDB, slaveDB };
 
-export { employeesController, articleController };
+// const employeesController = new Employees(db);
+// const articleController = new Article(db);
+
+// export { employeesController, articleController };

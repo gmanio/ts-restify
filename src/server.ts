@@ -1,5 +1,8 @@
 import * as restify from 'restify';
 import * as corsMiddleware from 'restify-cors-middleware';
+import { masterDB, slaveDB } from './db';
+import Employees from './controller/employees';
+import Article from './controller/article';
 // const corsMiddleware = require('restify-cors-middleware');
 
 const cors = corsMiddleware({
@@ -14,9 +17,10 @@ const cors = corsMiddleware({
   // exposeHeaders: ['API-Token-Expiry']
 })
 
-import { articleController, employeesController } from './db';
-
 const server = restify.createServer();
+
+const employeesController = new Employees();
+const articleController = new Article();
 
 server.pre(cors.preflight);
 server.pre((req, res, next) => {
@@ -32,19 +36,43 @@ server.use(restify.plugins.bodyParser({ mapParams: false }));
 /**
  * Employee Table
  */
-server.get('/employees', employeesController.getEmployee.bind(employeesController));
-server.get('/employees/page/:pageNumber', employeesController.getEmployeeByPage.bind(employeesController));
-server.get('/employees/:id', employeesController.getEmployeeById.bind(employeesController));
-server.get('/employees/search/:name', employeesController.getEmployeeByName.bind(employeesController));
-server.post('/employees/update/:id', employeesController.setEmployeeById.bind(employeesController));
+server.get('/employees', async (req, res) => res.send(await employeesController.getEmployee(slaveDB)));
+server.get('/employees/page/:pageNumber',
+  async (req, res) => {
+    const startIndex = req.params.pageNumber * 10;
+    res.send(await employeesController.getEmployeeByPage(slaveDB, startIndex));
+  });
+server.get('/employees/:id', async (req, res) => {
+  const id = req.params.id;
+  res.send(await employeesController.getEmployeeById(slaveDB, id));
+});
+server.get('/employees/search/:name', async (req, res) => {
+  const name = req.params.name;
+  console.log(name);
+  res.send(await employeesController.getEmployeeByName(slaveDB, name));
+});
+server.post('/employees/update/:id', async (req, res) => {
+  res.send(await employeesController.setEmployeeById(masterDB, { id: req.params.id, data: JSON.parse(req.body) }));
+});
 
 /**
  * Article Table
  */
-server.get('/article/:id', articleController.getArticle.bind(employeesController));
-server.post('/article/save', articleController.setArticle.bind(employeesController));
+server.get('/article/:id', async (req, res) => {
+  const id = req.params.id;
+  res.send(await articleController.getArticle(slaveDB, {id}));
+});
+
+server.post('/article/save', async (req, res) => {
+  const params = {
+    title: req.body.title,
+    content: JSON.stringify(req.body.content)
+  }
+
+  res.send(await articleController.setArticle(masterDB,params));
+});
 
 
-server.listen(2200, () => {
+server.listen(2500, () => {
   console.log('%s listening at %s', server.name, server.url);
 });
