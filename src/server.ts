@@ -60,7 +60,11 @@ server.post('/employees/update/:id', async (req, res) => {
  */
 server.get('/article/:id', async (req, res) => {
   const id = req.params.id;
-  res.send(await articleController.getArticle(slaveDB, {id}));
+  res.send(await articleController.getArticle(slaveDB, { id }));
+});
+
+server.get('/article', async (req, res) => {
+  res.send(await articleController.getArticleList(slaveDB));
 });
 
 server.post('/article/save', async (req, res) => {
@@ -69,10 +73,17 @@ server.post('/article/save', async (req, res) => {
     content: JSON.stringify(req.body.content)
   }
 
-  res.send(await articleController.setArticle(masterDB,params));
+  res.send(await articleController.setArticle(masterDB, params));
 });
 
 
 server.listen(2500, () => {
   console.log('%s listening at %s', server.name, server.url);
+});
+
+server.on('uncaughtException', function(req, res, route, err) {
+  // this event will be fired, with the error object from above:
+  // ReferenceError: x is not defined
+  console.log(err);
+  res.send(err);
 });

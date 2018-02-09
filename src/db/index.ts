@@ -10,25 +10,27 @@ const config = require('../../dbconfig.json');
 // }
 
 const masterDB = Knex({
-  // debug: true,
+  debug: true,
   client: 'mysql',
   connection: {
     host: config.master.host,
     user: config.master.user,
     password: config.master.password,
-    database: config.master.database
+    database: config.master.database,
+    connectTimeout: 1000
   },
   pool: { min: 0, max: 7 }
 })
 
 const slaveDB: Knex = Knex({
-  // debug: true,
+  debug: true,
   client: 'mysql',
   connection: {
     host: config.slave.host,
     user: config.slave.user,
     password: config.slave.password,
-    database: config.slave.database
+    database: config.slave.database,
+    connectTimeout: 1000
   },
   pool: { min: 0, max: 7 }
 });
