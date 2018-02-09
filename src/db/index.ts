@@ -18,7 +18,7 @@ const masterDB = Knex({
     password: config.master.password,
     database: config.master.database
   },
-  acquireConnectionTimeout: 100
+  pool: { min: 0, max: 7 }
 })
 
 const slaveDB: Knex = Knex({
@@ -30,7 +30,7 @@ const slaveDB: Knex = Knex({
     password: config.slave.password,
     database: config.slave.database
   },
-  acquireConnectionTimeout: 100
+  pool: { min: 0, max: 7 }
 });
 
 export { masterDB, slaveDB };

@@ -27,11 +27,11 @@ server.pre((req, res, next) => {
   req.headers.accept = 'application/json';
   next();
 });
+
 server.use(cors.actual);
 server.use(restify.plugins.gzipResponse());
 server.use(restify.plugins.queryParser({ mapParams: false }));
 server.use(restify.plugins.bodyParser({ mapParams: false }));
-
 
 /**
  * Employee Table
