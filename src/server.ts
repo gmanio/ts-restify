@@ -37,10 +37,11 @@ server.use(restify.plugins.bodyParser({ mapParams: false }));
  * Employee Table
  */
 server.get('/employees', async (req, res) => res.send(await employeesController.getEmployee(slaveDB)));
-server.get('/employees/page/:pageNumber',
+server.get('/employees/page',
   async (req, res) => {
-    const startIndex = req.params.pageNumber * 10;
-    res.send(await employeesController.getEmployeeByPage(slaveDB, startIndex));
+    const size = req.query.size ? req.query.size : 20;
+    const start = req.query.start ? req.query.start * size : 1;
+    res.send(await employeesController.getEmployeeByPage(slaveDB, { start, size }));
   });
 server.get('/employees/:id', async (req, res) => {
   const id = req.params.id;
@@ -48,7 +49,6 @@ server.get('/employees/:id', async (req, res) => {
 });
 server.get('/employees/search/:name', async (req, res) => {
   const name = req.params.name;
-  console.log(name);
   res.send(await employeesController.getEmployeeByName(slaveDB, name));
 });
 server.post('/employees/update/:id', async (req, res) => {
@@ -77,11 +77,11 @@ server.post('/article/save', async (req, res) => {
 });
 
 
-server.listen(2500, () => {
+server.listen(7777, () => {
   console.log('%s listening at %s', server.name, server.url);
 });
 
-server.on('uncaughtException', function(req, res, route, err) {
+server.on('uncaughtException', function (req, res, route, err) {
   // this event will be fired, with the error object from above:
   // ReferenceError: x is not defined
   console.log(err);

@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "node": "nodemon -e ts -x npm run debug",
+    "node": "nodemon -e ts -x npm run debug -f",
     "debug": "ts-node --inspect ./src/server.ts",
-    "start": "ts-node ./src/server.ts",
+    "start": "ts-node ./src/server.ts -f",
     "client": "parcel ./client/index.html",
     "build:client": "parcel build ./client/index.html",
     "watch": "nodemon"

@@ -2,14 +2,7 @@ import * as Knex from 'knex';
 
 const config = require('../../dbconfig.json');
 
-// interface DBConfig {
-//   host: string
-//   user: string
-//   password: string
-//   database: string
-// }
-
-const masterDB = Knex({
+const masterDB = (() => Knex({
   debug: true,
   client: 'mysql',
   connection: {
@@ -20,9 +13,9 @@ const masterDB = Knex({
     connectTimeout: 1000
   },
   pool: { min: 0, max: 7 }
-})
+}))();
 
-const slaveDB: Knex = Knex({
+const slaveDB = (() => Knex({
   debug: true,
   client: 'mysql',
   connection: {
@@ -33,11 +26,6 @@ const slaveDB: Knex = Knex({
     connectTimeout: 1000
   },
   pool: { min: 0, max: 7 }
-});
+}))();
 
 export { masterDB, slaveDB };
-
-// const employeesController = new Employees(db);
-// const articleController = new Article(db);
-
-// export { employeesController, articleController };

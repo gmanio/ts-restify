@@ -12,8 +12,8 @@ class Employees {
     return result;
   }
 
-  public async getEmployeeByPage(db, startIndex) {
-    const result: Employee[] = await db.select().from('employees').offset(startIndex).limit(50);
+  public async getEmployeeByPage(db, { start, size }) {
+    const result: Employee[] = await db.select().from('employees').offset(start).limit(size);
     return result;
   }
 
