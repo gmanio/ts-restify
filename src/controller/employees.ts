@@ -1,23 +1,23 @@
 import { Employee } from '../type/interfaces';
 
 class Employees {
-  public async getEmployee(db) {
+  public static async getEmployee(db) {
     // const queryParams = querystring.parse(req.getQuery());
     const result: Employee[] = await db.select().from('employees').limit(50);
     return result;
   }
 
-  public async getEmployeeById(db, id) {
+  public static async getEmployeeById(db, id) {
     const result: Employee[] = await db.select().from('employees').where('emp_no', id);
     return result;
   }
 
-  public async getEmployeeByPage(db, { start, size }) {
+  public static async getEmployeeByPage(db, { start, size }) {
     const result: Employee[] = await db.select().from('employees').offset(start).limit(size);
     return result;
   }
 
-  public async setEmployeeById(db, { id, data }) {
+  public static async setEmployeeById(db, { id, data }) {
     const result = await db.select().from('employees').where('emp_no', id)
       .update({
         first_name: data.first_name,
@@ -27,7 +27,7 @@ class Employees {
     return result;
   }
 
-  public async getEmployeeByName(db, name) {
+  public static async getEmployeeByName(db, name) {
     // const queryParams: any = querystring.parse(req.getQuery());
     // if ( queryParams ) {
     //   const pageNumber: number = queryParams.pageNumber;

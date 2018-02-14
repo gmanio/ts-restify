@@ -1,9 +1,8 @@
 import * as Knex from 'knex';
 
 const config = require('../../dbconfig.json');
-
-const masterDB = (() => Knex({
-  debug: true,
+const masterDB = Knex({
+  // debug: true,
   client: 'mysql',
   connection: {
     host: config.master.host,
@@ -12,11 +11,12 @@ const masterDB = (() => Knex({
     database: config.master.database,
     connectTimeout: 1000
   },
-  pool: { min: 0, max: 7 }
-}))();
+  pool: { min: 0 },
+  acquireConnectionTimeout: 10000
+});
 
-const slaveDB = (() => Knex({
-  debug: true,
+const slaveDB = Knex({
+  // debug: true,
   client: 'mysql',
   connection: {
     host: config.slave.host,
@@ -25,7 +25,8 @@ const slaveDB = (() => Knex({
     database: config.slave.database,
     connectTimeout: 1000
   },
-  pool: { min: 0, max: 7 }
-}))();
+  pool: { min: 0 },
+  acquireConnectionTimeout: 10000
+});
 
 export { masterDB, slaveDB };

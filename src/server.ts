@@ -3,7 +3,6 @@ import * as corsMiddleware from 'restify-cors-middleware';
 import { masterDB, slaveDB } from './db';
 import Employees from './controller/employees';
 import Article from './controller/article';
-// const corsMiddleware = require('restify-cors-middleware');
 
 const cors = corsMiddleware({
   preflightMaxAge: 5, //Optional
@@ -15,7 +14,7 @@ const cors = corsMiddleware({
   ]
   // allowHeaders: ['API-Token'],
   // exposeHeaders: ['API-Token-Expiry']
-})
+});
 
 const server = restify.createServer();
 
@@ -23,11 +22,11 @@ const employeesController = new Employees();
 const articleController = new Article();
 
 server.pre(cors.preflight);
+server.pre(restify.plugins.pre.dedupeSlashes());
 server.pre((req, res, next) => {
   req.headers.accept = 'application/json';
   next();
 });
-
 server.use(cors.actual);
 server.use(restify.plugins.gzipResponse());
 server.use(restify.plugins.queryParser({ mapParams: false }));
@@ -39,8 +38,9 @@ server.use(restify.plugins.bodyParser({ mapParams: false }));
 server.get('/employees', async (req, res) => res.send(await employeesController.getEmployee(slaveDB)));
 server.get('/employees/page',
   async (req, res) => {
-    const size = req.query.size ? req.query.size : 20;
-    const start = req.query.start ? req.query.start * size : 1;
+    const defaultSize = 20;
+    const size = req.query.size ? +req.query.size : defaultSize;
+    const start = req.query.start ? (+req.query.start * size) - 1 : 0;
     res.send(await employeesController.getEmployeeByPage(slaveDB, { start, size }));
   });
 server.get('/employees/:id', async (req, res) => {
@@ -77,13 +77,14 @@ server.post('/article/save', async (req, res) => {
 });
 
 
-server.listen(7777, () => {
+server.listen(2500, () => {
   console.log('%s listening at %s', server.name, server.url);
 });
 
-server.on('uncaughtException', function (req, res, route, err) {
+server.on('uncaughtException', (req, res, route, err) => {
   // this event will be fired, with the error object from above:
   // ReferenceError: x is not defined
+  console.log('uncaughtException');
   console.log(err);
   res.send(err);
 });
