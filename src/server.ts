@@ -1,8 +1,7 @@
 import * as restify from 'restify';
 import * as corsMiddleware from 'restify-cors-middleware';
-import { masterDB, slaveDB } from './db';
-import Employees from './controller/employees';
-import Article from './controller/article';
+import { employeesRoutes } from './routes/employees';
+import { articleRoutes } from './routes/article';
 
 const cors = corsMiddleware({
   preflightMaxAge: 5, //Optional
@@ -18,8 +17,11 @@ const cors = corsMiddleware({
 
 const server = restify.createServer();
 
-const employeesController = new Employees();
-const articleController = new Article();
+server.server.setTimeout(60000);
+server.use(cors.actual);
+server.use(restify.plugins.gzipResponse());
+server.use(restify.plugins.queryParser({ mapParams: false }));
+server.use(restify.plugins.bodyParser({ mapParams: false }));
 
 server.pre(cors.preflight);
 server.pre(restify.plugins.pre.dedupeSlashes());
@@ -27,64 +29,19 @@ server.pre((req, res, next) => {
   req.headers.accept = 'application/json';
   next();
 });
-server.use(cors.actual);
-server.use(restify.plugins.gzipResponse());
-server.use(restify.plugins.queryParser({ mapParams: false }));
-server.use(restify.plugins.bodyParser({ mapParams: false }));
 
-/**
- * Employee Table
- */
-server.get('/employees', async (req, res) => res.send(await employeesController.getEmployee(slaveDB)));
-server.get('/employees/page',
-  async (req, res) => {
-    const defaultSize = 20;
-    const size = req.query.size ? +req.query.size : defaultSize;
-    const start = req.query.start ? (+req.query.start * size) - 1 : 0;
-    res.send(await employeesController.getEmployeeByPage(slaveDB, { start, size }));
-  });
-server.get('/employees/:id', async (req, res) => {
-  const id = req.params.id;
-  res.send(await employeesController.getEmployeeById(slaveDB, id));
-});
-server.get('/employees/search/:name', async (req, res) => {
-  const name = req.params.name;
-  res.send(await employeesController.getEmployeeByName(slaveDB, name));
-});
-server.post('/employees/update/:id', async (req, res) => {
-  res.send(await employeesController.setEmployeeById(masterDB, { id: req.params.id, data: JSON.parse(req.body) }));
-});
+employeesRoutes(server);
+articleRoutes(server);
 
-/**
- * Article Table
- */
-server.get('/article/:id', async (req, res) => {
-  const id = req.params.id;
-  res.send(await articleController.getArticle(slaveDB, { id }));
-});
-
-server.get('/article', async (req, res) => {
-  res.send(await articleController.getArticleList(slaveDB));
-});
-
-server.post('/article/save', async (req, res) => {
-  const params = {
-    title: req.body.title,
-    content: JSON.stringify(req.body.content)
-  }
-
-  res.send(await articleController.setArticle(masterDB, params));
-});
-
-
-server.listen(2500, () => {
+server.listen(3000, () => {
   console.log('%s listening at %s', server.name, server.url);
 });
 
 server.on('uncaughtException', (req, res, route, err) => {
   // this event will be fired, with the error object from above:
   // ReferenceError: x is not defined
-  console.log('uncaughtException');
-  console.log(err);
+  console.log('uncaughtException : ' + err);
   res.send(err);
 });
+
+
