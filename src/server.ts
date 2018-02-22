@@ -3,6 +3,8 @@ import * as corsMiddleware from 'restify-cors-middleware';
 import { employeesRoutes } from './routes/employees';
 import { articleRoutes } from './routes/article';
 
+const user: number = 0;
+
 const cors = corsMiddleware({
   preflightMaxAge: 5, //Optional
   origins: [
@@ -25,6 +27,8 @@ server.use(restify.plugins.bodyParser({ mapParams: false }));
 server.pre(cors.preflight);
 server.pre(restify.plugins.pre.dedupeSlashes());
 server.pre((req, res, next) => {
+  this.user = user + 1;
+  console.log('connected :: ' + this.user);
   req.headers.accept = 'application/json';
   next();
 });
