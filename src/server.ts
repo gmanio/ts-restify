@@ -17,7 +17,6 @@ const cors = corsMiddleware({
 
 const server = restify.createServer();
 
-server.server.setTimeout(60000);
 server.use(cors.actual);
 server.use(restify.plugins.gzipResponse());
 server.use(restify.plugins.queryParser({ mapParams: false }));
@@ -33,7 +32,7 @@ server.pre((req, res, next) => {
 employeesRoutes(server);
 articleRoutes(server);
 
-server.listen(3000, () => {
+server.listen(80, () => {
   console.log('%s listening at %s', server.name, server.url);
 });
 

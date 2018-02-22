@@ -11,9 +11,9 @@ const masterDB = () => Knex({
     database: config.master.database
   },
   pool: {
-    min: 0, max: 10
+    min: 0, max: 20
   },
-  acquireConnectionTimeout: 10000
+  acquireConnectionTimeout: 1000
 });
 
 const slaveDB = () => Knex({
@@ -26,9 +26,9 @@ const slaveDB = () => Knex({
     database: config.slave.database
   },
   pool: {
-    min: 0, max: 10
+    min: 0, max: 20
   },
-  acquireConnectionTimeout: 10000
+  acquireConnectionTimeout: 1000
 });
 
 export { masterDB, slaveDB };
