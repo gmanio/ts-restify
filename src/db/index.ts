@@ -3,7 +3,7 @@ import * as Knex from 'knex';
 const config = require('../../dbconfig.json');
 const masterDB = () => Knex({
   // debug: true,
-  client: 'mysql',
+  client: 'mysql2',
   connection: {
     host: config.master.host,
     user: config.master.user,
@@ -15,7 +15,7 @@ const masterDB = () => Knex({
 
 const slaveDB = () => Knex({
   // debug: true,
-  client: 'mysql',
+  client: 'mysql2',
   connection: {
     host: config.slave.host,
     user: config.slave.user,

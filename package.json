@@ -15,7 +15,7 @@
   "dependencies": {
     "fetch-polyfill": "^0.8.2",
     "knex": "^0.14.4",
-    "mysql": "^2.15.0",
+    "mysql2": "^1.5.2",
     "restify": "^6.3.4",
     "restify-cors-middleware": "^1.1.0"
   },
