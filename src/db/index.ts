@@ -10,9 +10,6 @@ const masterDB = () => Knex({
     password: config.master.password,
     database: config.master.database
   },
-  pool: {
-    min: 0, max: 20
-  },
   acquireConnectionTimeout: 1000
 });
 
@@ -24,9 +21,6 @@ const slaveDB = () => Knex({
     user: config.slave.user,
     password: config.slave.password,
     database: config.slave.database
-  },
-  pool: {
-    min: 0, max: 20
   },
   acquireConnectionTimeout: 1000
 });
