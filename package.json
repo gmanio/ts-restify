@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "pm": "pm2 start ./src/server.ts",
     "node": "nodemon -e ts -x npm run debug -f",
     "debug": "ts-node --inspect ./src/server.ts",
     "start": "ts-node ./src/server.ts -f",
