@@ -4,6 +4,29 @@ Typescript + Restify + Knex
 
 ![Scheme](https://dev.mysql.com/doc/employee/en/images/employees-schema.png "mysql")
 
+### DB setting
+
+####connection_pool
+
+>max_connections = 10000
+
+>interactive_timeout = 300
+
+>wait_timeout = 300
+bind-address = 0.0.0.0
+
+
+#####Replication for master server    
+server-id = 1
+log_bin             = /var/log/mysql/mysql-bin.log
+log_bin_index       = /var/log/mysql/mysql-bin.log.index
+relay_log           = /var/log/mysql/mysql-relay-bin
+relay_log_index     = /var/log/mysql/mysql-relay-bin.index
+expire_logs_days    = 10
+max_binlog_size     = 100M
+log_slave_updates   = 1
+
+
 GmanPark @ 2017
 
 * * *

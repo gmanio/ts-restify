@@ -10,8 +10,25 @@ const masterDB = () => Knex({
     password: config.master.password,
     database: config.master.database
   },
-  acquireConnectionTimeout: 1000
+  pool: {
+    min: 2,
+    max: 10
+  }
 });
+
+const puppeteerDB = () => Knex({
+  client: 'mysql2',
+  connection: {
+    host: config.puppeteer.host,
+    user: config.puppeteer.user,
+    password: config.puppeteer.password,
+    database: config.puppeteer.database
+  },
+  pool: {
+    min: 2,
+    max: 10
+  }
+})
 
 const slaveDB = () => Knex({
   // debug: true,
@@ -22,7 +39,25 @@ const slaveDB = () => Knex({
     password: config.slave.password,
     database: config.slave.database
   },
-  acquireConnectionTimeout: 1000
+  pool: {
+    min: 2,
+    max: 10
+  }
 });
 
-export { masterDB, slaveDB };
+const financeDB = () => Knex({
+  // debug: true,
+  client: 'mysql2',
+  connection: {
+    host: config.finance.host,
+    user: config.finance.user,
+    password: config.finance.password,
+    database: config.finance.database
+  },
+  pool: {
+    min: 2,
+    max: 10
+  }
+});
+
+export { masterDB, slaveDB, puppeteerDB, financeDB };
