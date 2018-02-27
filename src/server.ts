@@ -3,7 +3,8 @@ import * as corsMiddleware from 'restify-cors-middleware';
 import { employeesRoutes } from './routes/employees';
 import { articleRoutes } from './routes/article';
 import { puppeteerRoutes } from './routes/puppeteer';
-import { getFetch } from './batch/finance';
+import { getFetchStockData } from './batch/finance';
+import { financeRoutes } from './routes/finance';
 
 const cors = corsMiddleware({
   preflightMaxAge: 5, //Optional
@@ -16,7 +17,7 @@ const cors = corsMiddleware({
   // allowHeaders: ['API-Token'],
   // exposeHeaders: ['API-Token-Expiry']
 });
-
+const work = 'test';
 const server = restify.createServer();
 
 server.use(cors.actual);
@@ -33,9 +34,9 @@ server.pre((req, res, next) => {
 employeesRoutes(server);
 articleRoutes(server);
 puppeteerRoutes(server);
-getFetch();
+financeRoutes(server);
+getFetchStockData();
 
-server.listen(80, () => {
+server.listen(1100, () => {
   console.log('%s listening at %s', server.name, server.url);
 });
-

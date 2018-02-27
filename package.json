@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "pm": "pm2 start ./src/server.ts",
-    "node": "nodemon -e ts -x npm run debug -f",
+    "pm2:restart": "pm2 restart 0",
+    "node": "nodemon -e ts -x npm run pm2:restart",
     "debug": "ts-node --inspect ./src/server.ts",
     "start": "ts-node ./src/server.ts -f",
     "client": "parcel ./client/index.html",
@@ -26,6 +27,7 @@
     "autoprefixer": "^7.2.6",
     "bootstrap": "^4.0.0",
     "firebase": "^4.10.0",
+    "moment": "^2.20.1",
     "node-cron": "^1.2.1",
     "node-sass": "^4.7.2",
     "nodemon": "^1.15.1",

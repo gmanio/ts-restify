@@ -8,8 +8,9 @@ const globalVar = {
   dataset: {}
 };
 
-export const getFetch = () => {
-  cron.schedule('0 * 9-15 * * 1-5', function () {
+export const getFetchStockData = () => {
+  // save kospi
+  cron.schedule('0 * 9-15 * * 1-5', () => {
     const context = vm.createContext(globalVar);
 
     request.get(apiUrls.kospi, async (error, response, body) => {
@@ -19,7 +20,8 @@ export const getFetch = () => {
     });
   });
 
-  cron.schedule('0 * 9-15 * * 1-5', function () {
+  // save kosdaq
+  cron.schedule('0 * 9-15 * * 1-5', () => {
     const context = vm.createContext(globalVar);
 
     request.get(apiUrls.kosdaq, async (error, response, body) => {
