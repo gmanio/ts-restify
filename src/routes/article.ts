@@ -2,19 +2,19 @@ import { masterDB, slaveDB } from '../db';
 import Article from '../controller/article';
 
 export const articleRoutes = (server) => {
-  const articleController = new Article();
+  const controller = new Article();
 
   /**
    * Article Table
    */
   server.get('/article/:id', async (req, res, next) => {
     const id = req.params.id;
-    res.send(await articleController.getArticle(slaveDB(), { id }));
+    res.send(await controller.getArticle(slaveDB(), { id }));
     return next();
   });
 
   server.get('/article', async (req, res, next) => {
-    res.send(await articleController.getArticleList(slaveDB()));
+    res.send(await controller.getArticleList(slaveDB()));
     return next();
   });
 
@@ -24,7 +24,7 @@ export const articleRoutes = (server) => {
       content: JSON.stringify(req.body.content)
     }
 
-    res.send(await articleController.setArticle(masterDB(), params));
+    res.send(await controller.setArticle(masterDB(), params));
     return next();
   });
 }

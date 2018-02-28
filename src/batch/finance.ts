@@ -3,6 +3,11 @@ import * as cron from 'node-cron';
 import * as vm from 'vm';
 import { financeDB } from '../db';
 
+enum API_TYPE {
+  KOSPI = 1,
+  KOSDAQ = 2
+}
+
 const apiUrls = require('../../dbconfig.json');
 const globalVar = {
   dataset: {}
@@ -16,7 +21,7 @@ export const getFetchStockData = () => {
     request.get(apiUrls.kospi, async (error, response, body) => {
       const script = new vm.Script(body);
       await script.runInContext(context);
-      await financeDB().insert({ dataset: JSON.stringify(globalVar.dataset), type: 1 }).into('stock');
+      await financeDB().insert({ dataset: JSON.stringify(globalVar.dataset), type: API_TYPE.KOSPI }).into('stock');
     });
   });
 
@@ -27,7 +32,7 @@ export const getFetchStockData = () => {
     request.get(apiUrls.kosdaq, async (error, response, body) => {
       const script = new vm.Script(body);
       await script.runInContext(context);
-      await financeDB().insert({ dataset: JSON.stringify(globalVar.dataset), type: 2 }).into('stock');
+      await financeDB().insert({ dataset: JSON.stringify(globalVar.dataset), type: API_TYPE.KOSDAQ }).into('stock');
     });
   });
 }

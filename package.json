@@ -3,41 +3,31 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "pm": "pm2 start ./src/server.ts",
-    "pm2:restart": "pm2 restart 0",
-    "node": "nodemon -e ts -x npm run pm2:restart",
-    "debug": "ts-node --inspect ./src/server.ts",
-    "start": "ts-node ./src/server.ts -f",
-    "client": "parcel ./client/index.html",
-    "build:client": "parcel build ./client/index.html",
-    "watch": "nodemon"
+    "start": "pm2 start ./src/server.ts && nodemon -e ts -x npm run pm2:restart",
+    "watch": "nodemon -e ts -x npm run pm2:restart",
+    "pm2:restart": "pm2 reload server",
+    "server": "ts-node ./src/server.ts",
+    "build": "parcel build ./src/server.ts"
   },
   "author": "GmanPark",
   "license": "MIT",
   "dependencies": {
-    "fetch-polyfill": "^0.8.2",
     "knex": "^0.14.4",
     "mysql2": "^1.5.2",
-    "restify": "^6.3.4",
-    "restify-cors-middleware": "^1.1.0"
+    "restify": "^6.3.4"
   },
   "devDependencies": {
     "@types/knex": "0.0.67",
     "@types/restify": "^5.0.7",
-    "autoprefixer": "^7.2.6",
-    "bootstrap": "^4.0.0",
-    "firebase": "^4.10.0",
+    "firebase": "^4.10.1",
     "moment": "^2.20.1",
     "node-cron": "^1.2.1",
-    "node-sass": "^4.7.2",
-    "nodemon": "^1.15.1",
+    "nodemon": "^1.17.1",
     "parcel-bundler": "^1.6.2",
-    "postcss-modules": "^1.1.0",
     "request": "^2.83.0",
-    "restify-clients": "^1.5.2",
+    "restify-cors-middleware": "^1.1.0",
     "rxjs": "^5.5.6",
     "ts-node": "^4.1.0",
-    "typescript": "^2.7.2",
-    "whatwg-fetch": "^2.0.3"
+    "typescript": "^2.7.2"
   }
 }

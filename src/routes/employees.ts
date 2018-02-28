@@ -1,7 +1,6 @@
 import { masterDB, slaveDB } from '../db';
 import Employees from '../controller/employees';
 
-
 export const employeesRoutes = (server) => {
   const employeesController = new Employees();
 
