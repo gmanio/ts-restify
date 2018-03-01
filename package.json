@@ -5,7 +5,8 @@
   "scripts": {
     "start": "pm2 start ./src/server.ts && nodemon -e ts -x npm run pm2:restart",
     "watch": "nodemon -e ts -x npm run pm2:restart",
-    "pm2:restart": "pm2 reload server",
+    "pm2:start": "pm2 start ./src/server.ts --watch",
+    "pm2:reload": "pm2 reload server",
     "server": "ts-node ./src/server.ts",
     "build": "parcel build ./src/server.ts"
   },

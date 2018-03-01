@@ -27,6 +27,6 @@ employeesRoutes(server);
 articleRoutes(server);
 puppeteerRoutes(server);
 financeRoutes(server);
-getFetchStockData();
+// getFetchStockData();
 
 server.listen(port, () => `${server.name} listening at ${server.url}`);
